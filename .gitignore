@@ -1,0 +1,12 @@
+# Ignore common binary assets by default
+*.png
+*.jpg
+*.jpeg
+*.webp
+*.gif
+*.ico
+*.pdf
+*.zip
+*.ttf
+*.woff
+*.woff2
