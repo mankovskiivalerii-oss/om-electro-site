@@ -39,13 +39,13 @@ const portfolioProjects = Array.from({ length: 5 }, (_, i) => {
     location: 'Санкт-Петербург / Ленинградская область',
     category: 'Тип объекта (уточняется)',
     works: ['Электромонтажные работы', 'Слаботочные системы'],
-    description: `Краткое описание выполненных работ для объекта ${objectNumber}. Данные будут уточнены после получения технической информации.`,
-    result: 'Работы выполнены в согласованные сроки с подготовкой инфраструктуры к дальнейшей эксплуатации.',
+    description: `Краткое описание объекта ${objectNumber}. Данные будут уточнены после получения финальных материалов.`,
+    result: 'Смонтированы основные системы, объект подготовлен к стабильной эксплуатации.',
     images: Array.from({ length: 10 }, (__unused, imageIndex) => `/portfolio/object-${objectNumber}/${String(imageIndex + 1).padStart(2, '0')}.jpg`),
   };
 });
 
-const logoCandidates = ['/logo.jpg', '/logo.png'];
+const logoCandidates = ['/logo.jpg', '/logo.png', '/1_1.jpg'];
 
 export default function App() {
   const [activeProjectId, setActiveProjectId] = useState(null);
@@ -74,11 +74,11 @@ export default function App() {
         <div className="container-base flex items-center justify-between gap-4 py-4">
           <a href="#top" className="flex items-center gap-3">
             {isLogoAvailable ? (
-              <img src={logoCandidates[logoIndex]} alt="Логотип ООО Электромонтажная компания ОМ" className="h-10 w-auto rounded sm:h-11 md:h-12" onError={handleLogoError} />
+              <img src={logoCandidates[logoIndex]} alt="Логотип ООО «Электро-монтажная компания “ОМ”»" className="h-9 w-auto object-contain sm:h-10 md:h-12" onError={handleLogoError} />
             ) : (
-              <div className="flex h-10 w-28 items-center justify-center rounded bg-slate-100 text-xs text-slate-500 sm:h-11 md:h-12">Логотип</div>
+              <div className="flex h-9 w-9 items-center justify-center rounded bg-slate-100 text-[10px] font-semibold text-slate-500 sm:h-10 sm:w-10 md:h-12 md:w-12">ОМ</div>
             )}
-            <span className="text-sm font-semibold md:text-base">ООО «ЭК “ОМ”»</span>
+            <span className="text-xs font-semibold leading-tight sm:text-sm md:text-base">ООО «Электро-монтажная компания “ОМ”»</span>
           </a>
           <nav className="hidden gap-6 text-sm lg:flex">
             <a href="#services" className="hover:text-brand">Услуги</a>
@@ -150,12 +150,12 @@ export default function App() {
 
         <section id="portfolio" className="container-base py-16 md:py-20">
           <h2 className="section-title">Портфолио</h2>
-          <div className="mt-8 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+          <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
             {portfolioProjects.map((project) => (
               <article key={project.id} className="portfolio-card group">
                 <ProjectImage src={project.images[0]} title={project.title} />
-                <div className="mt-5 space-y-3">
-                  <h3 className="text-lg font-semibold">{project.title}</h3>
+                <div className="mt-3 space-y-2">
+                  <h3 className="text-base font-semibold leading-tight">{project.title}</h3>
                   <p className="text-sm text-slate-600">{project.location}</p>
                   <p className="text-sm"><span className="font-semibold">Тип:</span> {project.category}</p>
                   <div className="flex flex-wrap gap-2">
@@ -163,8 +163,8 @@ export default function App() {
                       <span key={work} className="work-tag">{work}</span>
                     ))}
                   </div>
-                  <p className="text-sm text-slate-700"><span className="font-semibold">Результат:</span> {project.result}</p>
-                  <button type="button" className="btn-secondary" onClick={() => setActiveProjectId((prev) => (prev === project.id ? null : project.id))}>
+                  <p className="text-xs leading-5 text-slate-700"><span className="font-semibold">Результат:</span> {project.result}</p>
+                  <button type="button" className="btn-secondary px-3 py-2 text-xs" onClick={() => setActiveProjectId((prev) => (prev === project.id ? null : project.id))}>
                     Подробнее <ChevronDown size={16} className={`transition ${activeProjectId === project.id ? 'rotate-180' : ''}`} />
                   </button>
                 </div>
@@ -221,13 +221,13 @@ export default function App() {
             <div>
               <h2 className="section-title">О компании</h2>
               <p className="mt-4 text-slate-700">
-                ООО «Электромонтажная компания “ОМ”» выполняет электромонтажные и слаботочные работы в Санкт-Петербурге и Ленинградской области.
+                ООО «Электро-монтажная компания “ОМ”» выполняет электромонтажные и слаботочные работы в Санкт-Петербурге и Ленинградской области.
               </p>
             </div>
             <div className="card">
               <h3 className="font-semibold">Реквизиты</h3>
               <ul className="mt-4 space-y-2 text-sm text-slate-700">
-                <li>ООО «Электромонтажная компания “ОМ”»</li>
+                <li>ООО «Электро-монтажная компания “ОМ”»</li>
                 <li>ИНН: 7806633410</li>
                 <li>ОГРН: 1267800000698</li>
                 <li>КПП: 780601001</li>
@@ -257,7 +257,7 @@ export default function App() {
               </div>
             </div>
             <form id="request" className="card space-y-4">
-              <h3 className="text-lg font-semibold">Форма заявки</h3>
+              <h3 className="text-base font-semibold leading-tight">Форма заявки</h3>
               <input className="input" type="text" placeholder="Ваше имя" />
               <input className="input" type="tel" placeholder="Телефон" />
               <textarea className="input min-h-28" placeholder="Кратко опишите задачу" />
@@ -265,7 +265,7 @@ export default function App() {
                 Отправить заявку
               </button>
               {requestMessage && <p className="rounded-xl bg-slate-100 p-3 text-sm text-slate-700">{requestMessage}</p>}
-              <a className="btn-secondary w-full justify-center" href="mailto:vadimzepis@gmail.com?subject=Заявка%20с%20сайта%20ООО%20ЭК%20ОМ">
+              <a className="btn-secondary w-full justify-center" href="mailto:vadimzepis@gmail.com?subject=Заявка%20с%20сайта%20ООО%20Электро-монтажная%20компания%20ОМ">
                 Написать на email напрямую
               </a>
             </form>
@@ -275,7 +275,7 @@ export default function App() {
 
       <footer className="border-t border-slate-200 py-8">
         <div className="container-base flex flex-col items-center justify-between gap-3 text-sm text-slate-500 md:flex-row">
-          <p>© {new Date().getFullYear()} ООО «Электромонтажная компания “ОМ”»</p>
+          <p>© {new Date().getFullYear()} ООО «Электро-монтажная компания “ОМ”»</p>
           <div className="flex flex-col items-center gap-1 md:items-end">
             <p className="inline-flex items-center gap-2"><BriefcaseBusiness size={16} /> Электромонтаж и слаботочные системы</p>
             <p><a className="text-brand" href="tel:+79111883808">+7 911 188-38-08</a> · <a className="text-brand" href="mailto:vadimzepis@gmail.com">vadimzepis@gmail.com</a></p>
@@ -291,11 +291,11 @@ function ProjectImage({ src, title, compact = false }) {
 
   if (hasError) {
     return (
-      <div className={`flex items-center justify-center rounded-xl border border-dashed border-slate-300 bg-slate-100 px-3 text-center text-sm text-slate-500 ${compact ? 'h-24' : 'h-48'}`}>
-        Фото объекта будет добавлено
+      <div className={`flex items-center justify-center rounded-xl border border-dashed border-slate-300 bg-slate-100 px-3 text-center text-sm text-slate-500 ${compact ? 'h-20' : 'h-28'}`}>
+        Фото будет добавлено
       </div>
     );
   }
 
-  return <img src={src} alt={title} className={`w-full rounded-xl object-cover ${compact ? 'h-24' : 'h-48'}`} loading="lazy" onError={() => setHasError(true)} />;
+  return <img src={src} alt={title} className={`w-full rounded-xl object-cover ${compact ? 'h-20' : 'h-28'}`} loading="lazy" onError={() => setHasError(true)} />;
 }
