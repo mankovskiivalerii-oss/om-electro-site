@@ -1,16 +1,17 @@
+import { useMemo, useState } from 'react';
 import {
   ArrowRight,
   BadgeCheck,
   BriefcaseBusiness,
   Building2,
   CheckCircle2,
+  ChevronDown,
   ClipboardList,
   Contact,
   Flame,
   Monitor,
   Radio,
   ShieldCheck,
-  Siren,
   UserCheck,
   Video,
   Wrench,
@@ -27,27 +28,57 @@ const services = [
   { icon: ClipboardList, title: 'Инженерные системы', text: 'Регламентное обслуживание и поддержка инженерных систем объекта.' },
 ];
 
-const portfolioItems = ['Бизнес-центр', 'Производственное помещение', 'Складской комплекс', 'Торговое пространство', 'Офисный объект'];
-
 const steps = ['Обсуждение задачи и сбор требований', 'Выезд на объект и техническое обследование', 'Подготовка решения и согласование объёма работ', 'Выполнение монтажа и пусконаладка', 'Сдача работ и дальнейшее обслуживание'];
 
-const logoPath = '/logo.jpg';
+const portfolioProjects = Array.from({ length: 5 }, (_, i) => {
+  const objectNumber = i + 1;
+
+  return {
+    id: objectNumber,
+    title: `Объект ${objectNumber}: временное название`,
+    location: 'Санкт-Петербург / Ленинградская область',
+    category: 'Тип объекта (уточняется)',
+    works: ['Электромонтажные работы', 'Слаботочные системы'],
+    description: `Краткое описание выполненных работ для объекта ${objectNumber}. Данные будут уточнены после получения технической информации.`,
+    result: 'Работы выполнены в согласованные сроки с подготовкой инфраструктуры к дальнейшей эксплуатации.',
+    images: Array.from({ length: 10 }, (__unused, imageIndex) => `/portfolio/object-${objectNumber}/${String(imageIndex + 1).padStart(2, '0')}.jpg`),
+  };
+});
+
+const logoCandidates = ['/logo.jpg', '/logo.png'];
 
 export default function App() {
+  const [activeProjectId, setActiveProjectId] = useState(null);
+  const [logoIndex, setLogoIndex] = useState(0);
+  const [isLogoAvailable, setIsLogoAvailable] = useState(true);
+  const [requestMessage, setRequestMessage] = useState('');
+
+  const activeProject = useMemo(() => portfolioProjects.find((project) => project.id === activeProjectId), [activeProjectId]);
+
+  const handleLogoError = () => {
+    if (logoIndex < logoCandidates.length - 1) {
+      setLogoIndex((prev) => prev + 1);
+      return;
+    }
+
+    setIsLogoAvailable(false);
+  };
+
+  const handleRequestClick = () => {
+    setRequestMessage('Заявка подготовлена. Мы свяжемся с вами после подключения формы.');
+  };
+
   return (
     <div className="text-graphite">
       <header className="sticky top-0 z-40 border-b border-slate-200 bg-white/95 backdrop-blur">
         <div className="container-base flex items-center justify-between gap-4 py-4">
           <a href="#top" className="flex items-center gap-3">
-            <img
-              src={logoPath}
-              alt="Логотип ООО Электромонтажная компания ОМ"
-              className="h-10 w-auto rounded"
-              onError={(e) => {
-                e.currentTarget.src = '/logo.png';
-              }}
-            />
-            <span className="hidden text-sm font-semibold md:block">ООО «ЭК “ОМ”»</span>
+            {isLogoAvailable ? (
+              <img src={logoCandidates[logoIndex]} alt="Логотип ООО Электромонтажная компания ОМ" className="h-10 w-auto rounded sm:h-11 md:h-12" onError={handleLogoError} />
+            ) : (
+              <div className="flex h-10 w-28 items-center justify-center rounded bg-slate-100 text-xs text-slate-500 sm:h-11 md:h-12">Логотип</div>
+            )}
+            <span className="text-sm font-semibold md:text-base">ООО «ЭК “ОМ”»</span>
           </a>
           <nav className="hidden gap-6 text-sm lg:flex">
             <a href="#services" className="hover:text-brand">Услуги</a>
@@ -119,15 +150,44 @@ export default function App() {
 
         <section id="portfolio" className="container-base py-16 md:py-20">
           <h2 className="section-title">Портфолио</h2>
-          <div className="mt-8 grid gap-4 md:grid-cols-2 xl:grid-cols-5">
-            {portfolioItems.map((item, i) => (
-              <article key={item} className="card">
-                <p className="text-xs uppercase text-slate-500">Объект {i + 1}</p>
-                <h3 className="mt-2 font-semibold">{item}</h3>
-                <p className="mt-3 text-sm text-slate-600">Карточка-заглушка для демонстрации структуры реализованных объектов.</p>
+          <div className="mt-8 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+            {portfolioProjects.map((project) => (
+              <article key={project.id} className="portfolio-card group">
+                <ProjectImage src={project.images[0]} title={project.title} />
+                <div className="mt-5 space-y-3">
+                  <h3 className="text-lg font-semibold">{project.title}</h3>
+                  <p className="text-sm text-slate-600">{project.location}</p>
+                  <p className="text-sm"><span className="font-semibold">Тип:</span> {project.category}</p>
+                  <div className="flex flex-wrap gap-2">
+                    {project.works.map((work) => (
+                      <span key={work} className="work-tag">{work}</span>
+                    ))}
+                  </div>
+                  <p className="text-sm text-slate-700"><span className="font-semibold">Результат:</span> {project.result}</p>
+                  <button type="button" className="btn-secondary" onClick={() => setActiveProjectId((prev) => (prev === project.id ? null : project.id))}>
+                    Подробнее <ChevronDown size={16} className={`transition ${activeProjectId === project.id ? 'rotate-180' : ''}`} />
+                  </button>
+                </div>
               </article>
             ))}
           </div>
+
+          {activeProject && (
+            <div className="mt-8 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm md:p-8">
+              <h3 className="text-2xl font-semibold">{activeProject.title}</h3>
+              <p className="mt-3 text-slate-700">{activeProject.description}</p>
+              <p className="mt-3 text-sm text-slate-600">{activeProject.location} · {activeProject.category}</p>
+              <ul className="mt-4 list-disc space-y-1 pl-5 text-sm text-slate-700">
+                {activeProject.works.map((work) => <li key={work}>{work}</li>)}
+              </ul>
+              <p className="mt-4 text-sm text-slate-700"><span className="font-semibold">Результат:</span> {activeProject.result}</p>
+              <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
+                {activeProject.images.map((image, index) => (
+                  <ProjectImage key={image} src={image} title={`${activeProject.title} — фото ${index + 1}`} compact />
+                ))}
+              </div>
+            </div>
+          )}
         </section>
 
         <section className="bg-slate-50 py-16 md:py-20">
@@ -192,8 +252,8 @@ export default function App() {
               <h2 className="section-title">Контакты</h2>
               <p className="mt-4 text-slate-700">Регион работы: Санкт-Петербург и Ленинградская область.</p>
               <div className="mt-6 space-y-3 text-sm">
-                <p><span className="font-semibold">Телефон:</span> <a className="text-brand" href="tel:+79990000000">+7 (999) 000-00-00</a></p>
-                <p><span className="font-semibold">Email:</span> <a className="text-brand" href="mailto:info@om-electro.ru">info@om-electro.ru</a></p>
+                <p><span className="font-semibold">Телефон:</span> <a className="text-brand" href="tel:+79111883808">+7 911 188-38-08</a></p>
+                <p><span className="font-semibold">Email:</span> <a className="text-brand" href="mailto:vadimzepis@gmail.com">vadimzepis@gmail.com</a></p>
               </div>
             </div>
             <form id="request" className="card space-y-4">
@@ -201,9 +261,13 @@ export default function App() {
               <input className="input" type="text" placeholder="Ваше имя" />
               <input className="input" type="tel" placeholder="Телефон" />
               <textarea className="input min-h-28" placeholder="Кратко опишите задачу" />
-              <button type="button" className="btn-primary w-full justify-center">
+              <button type="button" className="btn-primary w-full justify-center" onClick={handleRequestClick}>
                 Отправить заявку
               </button>
+              {requestMessage && <p className="rounded-xl bg-slate-100 p-3 text-sm text-slate-700">{requestMessage}</p>}
+              <a className="btn-secondary w-full justify-center" href="mailto:vadimzepis@gmail.com?subject=Заявка%20с%20сайта%20ООО%20ЭК%20ОМ">
+                Написать на email напрямую
+              </a>
             </form>
           </div>
         </section>
@@ -212,9 +276,26 @@ export default function App() {
       <footer className="border-t border-slate-200 py-8">
         <div className="container-base flex flex-col items-center justify-between gap-3 text-sm text-slate-500 md:flex-row">
           <p>© {new Date().getFullYear()} ООО «Электромонтажная компания “ОМ”»</p>
-          <p className="inline-flex items-center gap-2"><BriefcaseBusiness size={16} /> Электромонтаж и слаботочные системы</p>
+          <div className="flex flex-col items-center gap-1 md:items-end">
+            <p className="inline-flex items-center gap-2"><BriefcaseBusiness size={16} /> Электромонтаж и слаботочные системы</p>
+            <p><a className="text-brand" href="tel:+79111883808">+7 911 188-38-08</a> · <a className="text-brand" href="mailto:vadimzepis@gmail.com">vadimzepis@gmail.com</a></p>
+          </div>
         </div>
       </footer>
     </div>
   );
+}
+
+function ProjectImage({ src, title, compact = false }) {
+  const [hasError, setHasError] = useState(false);
+
+  if (hasError) {
+    return (
+      <div className={`flex items-center justify-center rounded-xl border border-dashed border-slate-300 bg-slate-100 px-3 text-center text-sm text-slate-500 ${compact ? 'h-24' : 'h-48'}`}>
+        Фото объекта будет добавлено
+      </div>
+    );
+  }
+
+  return <img src={src} alt={title} className={`w-full rounded-xl object-cover ${compact ? 'h-24' : 'h-48'}`} loading="lazy" onError={() => setHasError(true)} />;
 }

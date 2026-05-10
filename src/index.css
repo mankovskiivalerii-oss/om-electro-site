@@ -32,4 +32,13 @@
   .input {
     @apply w-full rounded-xl border border-slate-300 px-4 py-3 text-sm outline-none transition focus:border-brand;
   }
+
+  .portfolio-card {
+    @apply rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition duration-200 hover:-translate-y-1 hover:shadow-lg;
+  }
+
+  .work-tag {
+    @apply rounded-full bg-orange-100 px-3 py-1 text-xs font-medium text-brand;
+  }
+
 }
