@@ -73,11 +73,13 @@ export default function App() {
       <header className="sticky top-0 z-40 border-b border-slate-200 bg-white/95 backdrop-blur">
         <div className="container-base flex items-center justify-between gap-4 py-4">
           <a href="#top" className="flex items-center gap-3">
-            {isLogoAvailable ? (
-              <img src={logoCandidates[logoIndex]} alt="Логотип ООО «Электро-монтажная компания “ОМ”»" className="h-9 w-auto object-contain sm:h-10 md:h-12" onError={handleLogoError} />
-            ) : (
-              <div className="flex h-9 w-9 items-center justify-center rounded bg-slate-100 text-[10px] font-semibold text-slate-500 sm:h-10 sm:w-10 md:h-12 md:w-12">ОМ</div>
-            )}
+            <div className="h-11 w-11 shrink-0 overflow-hidden rounded-full border border-slate-200 shadow-sm md:h-14 md:w-14">
+              {isLogoAvailable ? (
+                <img src={logoCandidates[logoIndex]} alt="Логотип ООО «Электро-монтажная компания “ОМ”»" className="h-full w-full object-cover" onError={handleLogoError} />
+              ) : (
+                <div className="flex h-full w-full items-center justify-center bg-slate-100 text-[10px] font-semibold text-slate-500">ОМ</div>
+              )}
+            </div>
             <span className="text-xs font-semibold leading-tight sm:text-sm md:text-base">ООО «Электро-монтажная компания “ОМ”»</span>
           </a>
           <nav className="hidden gap-6 text-sm lg:flex">
