@@ -71,16 +71,16 @@ export default function App() {
   return (
     <div className="text-graphite">
       <header className="sticky top-0 z-40 border-b border-slate-200 bg-white/95 backdrop-blur">
-        <div className="container-base flex items-center justify-between gap-4 py-4">
-          <a href="#top" className="flex items-center gap-3">
-            <div className="h-11 w-11 shrink-0 overflow-hidden rounded-full border border-slate-200 shadow-sm md:h-14 md:w-14">
+        <div className="container-base flex min-h-[80px] items-center justify-between gap-4 py-2 md:min-h-[96px]">
+          <a href="#top" className="flex items-center gap-4">
+            <div className="h-14 w-14 shrink-0 overflow-hidden rounded-full shadow-sm ring-1 ring-slate-200 sm:h-16 sm:w-16 md:h-20 md:w-20">
               {isLogoAvailable ? (
                 <img src={logoCandidates[logoIndex]} alt="Логотип ООО «Электро-монтажная компания “ОМ”»" className="h-full w-full object-cover" onError={handleLogoError} />
               ) : (
                 <div className="flex h-full w-full items-center justify-center bg-slate-100 text-[10px] font-semibold text-slate-500">ОМ</div>
               )}
             </div>
-            <span className="text-xs font-semibold leading-tight sm:text-sm md:text-base">ООО «Электро-монтажная компания “ОМ”»</span>
+            <span className="max-w-[220px] text-[11px] font-semibold leading-tight sm:max-w-[280px] sm:text-sm md:max-w-none md:text-base">ООО «Электро-монтажная компания “ОМ”»</span>
           </a>
           <nav className="hidden gap-6 text-sm lg:flex">
             <a href="#services" className="hover:text-brand">Услуги</a>
