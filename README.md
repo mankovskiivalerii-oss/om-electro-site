@@ -2,7 +2,7 @@
 
 Одностраничный сайт на React + Vite + Tailwind CSS для компании, выполняющей электромонтажные и слаботочные работы в Санкт-Петербурге и Ленинградской области.
 
-## Запуск
+## Локальный запуск
 
 ```bash
 npm install
@@ -13,8 +13,23 @@ npm run dev
 
 ```bash
 npm run build
-npm run preview
 ```
+
+## Публикация
+
+Сайт публикуется через GitHub Actions при push в `main`.
+
+## Настройка формы
+
+Для отправки заявок через Formspree добавьте переменную окружения:
+
+```bash
+VITE_FORMSPREE_ENDPOINT=https://formspree.io/f/xxxxxxx
+```
+
+## Подключение домена
+
+GitHub → **Settings** → **Pages** → **Custom domain**.
 
 ## Стек
 

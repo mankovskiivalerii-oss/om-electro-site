@@ -112,12 +112,17 @@ const portfolioProjects = [
 ];
 
 const logoCandidates = ['/logo.jpg', '/logo.png', '/1_1.jpg'];
+const formspreeEndpoint = import.meta.env.VITE_FORMSPREE_ENDPOINT;
 
 export default function App() {
   const [activeProjectId, setActiveProjectId] = useState(null);
   const [logoIndex, setLogoIndex] = useState(0);
   const [isLogoAvailable, setIsLogoAvailable] = useState(true);
+  const [requestName, setRequestName] = useState('');
+  const [requestPhone, setRequestPhone] = useState('');
+  const [requestComment, setRequestComment] = useState('');
   const [requestMessage, setRequestMessage] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const activeProject = useMemo(() => portfolioProjects.find((project) => project.id === activeProjectId), [activeProjectId]);
 
@@ -130,8 +135,54 @@ export default function App() {
     setIsLogoAvailable(false);
   };
 
-  const handleRequestClick = () => {
-    setRequestMessage('Заявка подготовлена. Мы свяжемся с вами после подключения формы.');
+  const handleRequestSubmit = async (event) => {
+    event.preventDefault();
+
+    if (!requestName.trim() || !requestPhone.trim()) {
+      setRequestMessage('Пожалуйста, укажите имя и телефон.');
+      return;
+    }
+
+    if (!formspreeEndpoint) {
+      setRequestMessage('Отправка формы пока не подключена. Позвоните по номеру +7 911 188-38-08 или напишите на vadimzepis@gmail.com.');
+      return;
+    }
+
+    const payload = {
+      name: requestName.trim(),
+      phone: requestPhone.trim(),
+      message: requestComment.trim(),
+      pageUrl: window.location.href,
+      source: 'Сайт ООО Электро-монтажная компания ОМ',
+      _subject: 'Новая заявка с сайта ООО ЭК ОМ',
+    };
+
+    setIsSubmitting(true);
+    setRequestMessage('');
+
+    try {
+      const response = await fetch(formspreeEndpoint, {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (!response.ok) {
+        throw new Error('Form submit failed');
+      }
+
+      setRequestName('');
+      setRequestPhone('');
+      setRequestComment('');
+      setRequestMessage('Заявка отправлена. Мы свяжемся с вами в ближайшее время.');
+    } catch {
+      setRequestMessage('Не удалось отправить заявку. Пожалуйста, позвоните по номеру +7 911 188-38-08 или напишите на vadimzepis@gmail.com.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -324,13 +375,13 @@ export default function App() {
                 <p><span className="font-semibold">Email:</span> <a className="text-brand" href="mailto:vadimzepis@gmail.com">vadimzepis@gmail.com</a></p>
               </div>
             </div>
-            <form id="request" className="card space-y-4">
+            <form id="request" className="card space-y-4" onSubmit={handleRequestSubmit}>
               <h3 className="text-base font-semibold leading-tight">Форма заявки</h3>
-              <input className="input" type="text" placeholder="Ваше имя" />
-              <input className="input" type="tel" placeholder="Телефон" />
-              <textarea className="input min-h-28" placeholder="Кратко опишите задачу" />
-              <button type="button" className="btn-primary w-full justify-center" onClick={handleRequestClick}>
-                Отправить заявку
+              <input className="input" type="text" placeholder="Ваше имя" value={requestName} onChange={(event) => setRequestName(event.target.value)} required />
+              <input className="input" type="tel" placeholder="Телефон" value={requestPhone} onChange={(event) => setRequestPhone(event.target.value)} required />
+              <textarea className="input min-h-28" placeholder="Кратко опишите задачу" value={requestComment} onChange={(event) => setRequestComment(event.target.value)} />
+              <button type="submit" className="btn-primary w-full justify-center disabled:cursor-not-allowed disabled:opacity-70" disabled={isSubmitting}>
+                {isSubmitting ? 'Отправляем...' : 'Отправить заявку'}
               </button>
               {requestMessage && <p className="rounded-xl bg-slate-100 p-3 text-sm text-slate-700">{requestMessage}</p>}
               <a className="btn-secondary w-full justify-center" href="mailto:vadimzepis@gmail.com?subject=Заявка%20с%20сайта%20ООО%20Электро-монтажная%20компания%20ОМ">
