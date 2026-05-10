@@ -30,20 +30,86 @@ const services = [
 
 const steps = ['Обсуждение задачи и сбор требований', 'Выезд на объект и техническое обследование', 'Подготовка решения и согласование объёма работ', 'Выполнение монтажа и пусконаладка', 'Сдача работ и дальнейшее обслуживание'];
 
-const portfolioProjects = Array.from({ length: 5 }, (_, i) => {
-  const objectNumber = i + 1;
-
-  return {
-    id: objectNumber,
-    title: `Объект ${objectNumber}: временное название`,
-    location: 'Санкт-Петербург / Ленинградская область',
-    category: 'Тип объекта (уточняется)',
-    works: ['Электромонтажные работы', 'Слаботочные системы'],
-    description: `Краткое описание объекта ${objectNumber}. Данные будут уточнены после получения финальных материалов.`,
-    result: 'Смонтированы основные системы, объект подготовлен к стабильной эксплуатации.',
-    images: Array.from({ length: 10 }, (__unused, imageIndex) => `/portfolio/object-${objectNumber}/${String(imageIndex + 1).padStart(2, '0')}.jpg`),
-  };
-});
+const portfolioProjects = [
+  {
+    id: 1,
+    title: 'Центр кузовного ремонта',
+    location: 'Санкт-Петербург',
+    category: 'Промышленный объект',
+    works: ['Электромонтажные работы'],
+    description: 'Проведена замена силовых сетей на большей части объекта, демонтаж старого электроосвещения и монтаж нового электроосвещения.',
+    result: 'Работы сданы заказчику.',
+    images: [
+      '/portfolio/object-1/01.jpg', '/portfolio/object-1/02.jpg', '/portfolio/object-1/03.jpg', '/portfolio/object-1/04.jpg', '/portfolio/object-1/05.jpg',
+      '/portfolio/object-1/06.jpg', '/portfolio/object-1/07.jpg', '/portfolio/object-1/08.jpg', '/portfolio/object-1/09.jpg', '/portfolio/object-1/10.jpg',
+    ],
+  },
+  {
+    id: 2,
+    title: 'Деловой центр',
+    location: 'Санкт-Петербург',
+    category: 'Деловой офисный центр',
+    works: ['Электромонтажные работы', 'Монтаж слаботочных сетей'],
+    description: 'Выполнен монтаж электрических и слаботочных сетей на объекте заказчика в соответствии с проектной документацией.',
+    result: 'Работы выполнены в соответствии с проектом и сданы заказчику.',
+    images: [
+      '/portfolio/object-2/01.jpg', '/portfolio/object-2/02.jpg', '/portfolio/object-2/03.jpg', '/portfolio/object-2/04.jpg', '/portfolio/object-2/05.jpg',
+      '/portfolio/object-2/06.jpg', '/portfolio/object-2/07.jpg', '/portfolio/object-2/08.jpg', '/portfolio/object-2/09.jpg', '/portfolio/object-2/10.jpg',
+    ],
+  },
+  {
+    id: 3,
+    title: 'Площадка для хранения автомобилей',
+    location: 'Ленинградская область',
+    category: 'Автомобильная стоянка',
+    works: [
+      'Корректировка проекта электроснабжения',
+      'Корректировка проекта слаботочных сетей',
+      'Электромонтажные работы',
+      'Монтаж слаботочных сетей',
+      'Сварочные работы',
+      'Пусконаладочные работы',
+    ],
+    description: 'Работы проводились в зимний период на открытом пространстве. Выполнена корректировка проектных решений, электромонтажные и слаботочные работы, сварочные и пусконаладочные работы.',
+    result: 'Работы сданы заказчику.',
+    images: [
+      '/portfolio/object-3/01.jpg', '/portfolio/object-3/02.jpg', '/portfolio/object-3/03.jpg', '/portfolio/object-3/04.jpg', '/portfolio/object-3/05.jpg',
+      '/portfolio/object-3/06.jpg', '/portfolio/object-3/07.jpg', '/portfolio/object-3/08.jpg', '/portfolio/object-3/09.jpg', '/portfolio/object-3/10.jpg',
+    ],
+  },
+  {
+    id: 4,
+    title: 'Деловой центр',
+    location: 'Санкт-Петербург',
+    category: 'Коммерческий объект',
+    works: ['Электромонтажные работы', 'Монтаж слаботочных сетей'],
+    description: 'Выполнен монтаж электрических и слаботочных сетей в соответствии с проектной документацией.',
+    result: 'Работы сданы заказчику.',
+    images: [
+      '/portfolio/object-4/01.jpg', '/portfolio/object-4/02.jpg', '/portfolio/object-4/03.jpg', '/portfolio/object-4/04.jpg', '/portfolio/object-4/05.jpg',
+      '/portfolio/object-4/06.jpg', '/portfolio/object-4/07.jpg', '/portfolio/object-4/08.jpg', '/portfolio/object-4/09.jpg', '/portfolio/object-4/10.jpg',
+    ],
+  },
+  {
+    id: 5,
+    title: 'Автосалон дилерского центра',
+    location: 'Санкт-Петербург',
+    category: 'Коммерческий объект',
+    works: [
+      'Корректировка проекта электроснабжения',
+      'Электромонтажные работы',
+      'Монтаж слаботочных сетей',
+      'Установка оборудования',
+      'Пусконаладочные работы',
+    ],
+    description: 'Выполнена корректировка проекта электроснабжения, электромонтажные работы, монтаж слаботочных сетей, установка оборудования и пусконаладочные работы.',
+    result: 'Работы сданы заказчику.',
+    images: [
+      '/portfolio/object-5/01.jpg', '/portfolio/object-5/02.jpg', '/portfolio/object-5/03.jpg', '/portfolio/object-5/04.jpg', '/portfolio/object-5/05.jpg',
+      '/portfolio/object-5/06.jpg', '/portfolio/object-5/07.jpg', '/portfolio/object-5/08.jpg', '/portfolio/object-5/09.jpg', '/portfolio/object-5/10.jpg',
+    ],
+  },
+];
 
 const logoCandidates = ['/logo.jpg', '/logo.png', '/1_1.jpg'];
 
@@ -161,7 +227,7 @@ export default function App() {
                   <p className="text-sm text-slate-600">{project.location}</p>
                   <p className="text-sm"><span className="font-semibold">Тип:</span> {project.category}</p>
                   <div className="flex flex-wrap gap-2">
-                    {project.works.map((work) => (
+                    {project.works.slice(0, 2).map((work) => (
                       <span key={work} className="work-tag">{work}</span>
                     ))}
                   </div>
